@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 import { Form, FormLabel, FormInput, FormButton } from './PhonebookForm.styled';
-
-const PhonebookForm = ({ onSubmit }) => {
+import { addContact } from 'redux/ContactsSlice';
+import { nanoid } from '@reduxjs/toolkit';
+import { useDispatch } from 'react-redux';
+const PhonebookForm = () => {
   const [inputs, setInputs] = useState({});
+  const dispatch = useDispatch();
 
   const handleChange = event => {
     const { name, value } = event.target;
@@ -19,8 +21,12 @@ const PhonebookForm = ({ onSubmit }) => {
       return;
     }
 
-    onSubmit(inputs);
+    const newContact = {
+      ...inputs,
+      id: nanoid(),
+    };
 
+    dispatch(addContact(newContact));
     reset();
   };
 
@@ -54,10 +60,6 @@ const PhonebookForm = ({ onSubmit }) => {
       <FormButton type="submit">Add contact</FormButton>
     </Form>
   );
-};
-
-PhonebookForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
 };
 
 export default PhonebookForm;
