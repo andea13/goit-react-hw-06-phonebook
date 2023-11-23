@@ -9,7 +9,6 @@ import { useDispatch } from 'react-redux';
 
 export const ContactsListItem = ({ name, number, id }) => {
   const dispatch = useDispatch();
-  console.log(id);
 
   return (
     <ContactsItem>
