@@ -9,10 +9,8 @@ let contact = [
   { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
 ];
 
-const localStorageContacts = localStorage.getItem('list');
-
 const initialState = {
-  list: localStorageContacts ? JSON.parse(localStorageContacts) : contact,
+  contacts: [],
   filter: '',
 };
 
@@ -21,14 +19,14 @@ export const ContactsSlice = createSlice({
   initialState,
   reducers: {
     addContact: (state, action) => {
-      const duplicate = state.list.find(
+      const duplicate = state.contacts.find(
         item => item.name.toLowerCase() === action.payload.name.toLowerCase()
       );
       if (duplicate) {
         alert(`${contact.name} is already in contacts`);
         return;
       }
-      state.list.push(action.payload);
+      state.contacts.push(action.payload);
     },
 
     setFilter: (state, action) => {
@@ -37,7 +35,9 @@ export const ContactsSlice = createSlice({
     },
 
     deleteContact: (state, action) => {
-      state.list = state.list.filter(contact => contact.id !== action.payload);
+      state.contacts = state.contacts.filter(
+        contact => contact.id !== action.payload
+      );
     },
   },
 });
@@ -45,7 +45,7 @@ export const ContactsSlice = createSlice({
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['list'],
+  whitelist: ['contacts'],
 };
 
 export const ContactsReducer = persistReducer(

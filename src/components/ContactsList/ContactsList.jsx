@@ -4,11 +4,11 @@ import { useSelector } from 'react-redux';
 import { getContactsAndFilterValue } from 'redux/ContactsSlice';
 
 export const ContactsList = () => {
-  const { list, filter } = useSelector(getContactsAndFilterValue);
+  const { contacts, filter } = useSelector(getContactsAndFilterValue);
 
   return (
     <ContactList>
-      {list
+      {contacts
         .filter(({ name }) => name.toLowerCase().includes(filter.toLowerCase()))
         .map(({ name, number, id }) => (
           <ContactsListItem name={name} number={number} key={id} id={id} />
