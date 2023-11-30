@@ -12,14 +12,6 @@ export const ContactsSlice = createSlice({
   initialState,
   reducers: {
     addContact: (state, action) => {
-      console.log(state);
-      const duplicate = state.contacts.find(
-        item => item.name.toLowerCase() === action.payload.name.toLowerCase()
-      );
-      if (duplicate) {
-        alert(`${action.payload.name} is already in contacts`);
-        return;
-      }
       state.contacts.push(action.payload);
     },
 
@@ -45,7 +37,7 @@ export const ContactsReducer = persistReducer(
   persistConfig,
   ContactsSlice.reducer
 );
-export const getContacts = state => state;
-export const getFilter = state => state;
+// export const getContacts = state => state.contacts;
+// export const getFilter = state => state.filter;
 
 export const { addContact, setFilter, deleteContact } = ContactsSlice.actions;

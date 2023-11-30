@@ -1,11 +1,15 @@
 import { useState } from 'react';
 import { Form, FormLabel, FormInput, FormButton } from './PhonebookForm.styled';
 import { addContact } from 'redux/ContactsSlice';
+import { getContacts } from 'redux/selectors';
 import { nanoid } from '@reduxjs/toolkit';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+
 const PhonebookForm = () => {
-  const [inputs, setInputs] = useState({});
+  const [inputs, setInputs] = useState({ name: '', number: '' });
   const dispatch = useDispatch();
+
+  const contacts = useSelector(getContacts);
 
   const handleChange = event => {
     const { name, value } = event.target;
@@ -21,6 +25,14 @@ const PhonebookForm = () => {
       return;
     }
 
+    const duplicate = contacts.find(
+      item => item.name.toLowerCase() === inputs.name.toLowerCase()
+    );
+    if (duplicate) {
+      alert(`${inputs.name} is already in contacts`);
+      return;
+    }
+
     const newContact = {
       ...inputs,
       id: nanoid(),
@@ -31,7 +43,7 @@ const PhonebookForm = () => {
   };
 
   const reset = () => {
-    setInputs({});
+    setInputs({ name: '', number: '' });
   };
 
   return (
@@ -39,7 +51,7 @@ const PhonebookForm = () => {
       <FormLabel>
         Name
         <FormInput
-          value={inputs.name || ''}
+          value={inputs.name}
           onChange={handleChange}
           type="text"
           name="name"
@@ -50,7 +62,7 @@ const PhonebookForm = () => {
       <FormLabel>
         Number
         <FormInput
-          value={inputs.number || ''}
+          value={inputs.number}
           onChange={handleChange}
           type="tel"
           name="number"
